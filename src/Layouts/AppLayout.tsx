@@ -8,7 +8,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Nav />
 
       {/* Conteúdo principal */}
-      <main className="flex-grow mt-16 p-6">{children}</main>
+      <main className="">{children}</main>
 
       {/* Footer */}
       <Footer />
