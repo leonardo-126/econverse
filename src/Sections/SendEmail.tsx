@@ -2,6 +2,19 @@ import CardInfo from "@/Components/CardInfo";
 import { HiOutlineCalendarDays, HiOutlineHandRaised } from "react-icons/hi2";
 
 export default function SendEmail() {
+  const infos = [
+    {
+      icon: HiOutlineCalendarDays,
+      title: "Conteúdos semanais",
+      text: "Artigos e dicas atualizadas sobre boas práticas agrícolas, gestão rural e inovações no campo.",
+    },
+    {
+      icon: HiOutlineHandRaised,
+      title: "Sem spam",
+      text: "Você receberá apenas informações relevantes para a agricultura, de forma clara e objetiva.",
+    },
+  ];
+
   return (
     <div className="relative isolate overflow-hidden bg-white py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -36,18 +49,14 @@ export default function SendEmail() {
             </div>
           </div>
           <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
-            <CardInfo
-              icon={HiOutlineCalendarDays}
-              title="Conteúdos semanais"
-              text="Artigos e dicas atualizadas sobre boas práticas agrícolas,
-                gestão rural e inovações no campo."
-            />
-            <CardInfo
-              icon={HiOutlineHandRaised}
-              title="Sem spam"
-              text="Você receberá apenas informações relevantes para a agricultura,
-                de forma clara e objetiva."
-            />
+            {infos.map((item, index) => (
+              <CardInfo
+                key={index}
+                icon={item.icon}
+                title={item.title}
+                text={item.text}
+              />
+            ))}
           </dl>
         </div>
       </div>
