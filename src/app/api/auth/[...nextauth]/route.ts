@@ -8,8 +8,8 @@ const nextAuthOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "credentials",
             credentials: {
-                email = {label: 'email', type: 'text'},
-                password = {label: 'password', type: 'password'}
+                email: {label: 'email', type: 'text'},
+                password: {label: 'password', type: 'password'}
             },
             async authorize(credentials, req) {
                 const response = await fetch("", { //requisicao aqui
@@ -31,11 +31,12 @@ const nextAuthOptions: NextAuthOptions = {
                 return null
             },
         })
-    ]
+    ],
+    pages: {
+        signIn: '/'
+    }
 }
 
-const handler = NextAuth ({
-    ...
-})
+const handler = NextAuth (nextAuthOptions)
 
 export {handler as GET, handler as POST}
