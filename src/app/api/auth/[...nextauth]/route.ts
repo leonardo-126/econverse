@@ -1,42 +1,53 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import Email from "next-auth/providers/email";
-import { json } from "stream/consumers";
 
 const nextAuthOptions: NextAuthOptions = {
-    providers: [
-        CredentialsProvider({
-            name: "credentials",
-            credentials: {
-                email: {label: 'email', type: 'text'},
-                password: {label: 'password', type: 'password'}
-            },
-            async authorize(credentials, req) {
-                const response = await fetch("", { //requisicao aqui
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: credentials?.email,
-                        password: credentials?.password
-                    })
-                })
-                const user = await response.json()
+  providers: [
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        const response = await fetch("http://localhost:3002/login", {
+          //requisicao aqui
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials?.email,
+            password: credentials?.password,
+          }),
+        });
+        const user = await response.json();
 
-                if(user && response.ok){
-                    return user
-                }
+        if (user && response.ok) {
+          return user;
+        }
 
-                return null
-            },
-        })
-    ],
-    pages: {
-        signIn: '/'
-    }
-}
+        return null;
+      },
+    }),
+  ],
+  pages: {
+    signIn: "/auth",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user as any; // ✅ adiciona o user dentro da session
+      return session;
+    },
+  },
+};
 
-const handler = NextAuth (nextAuthOptions)
+const handler = NextAuth(nextAuthOptions);
 
-export {handler as GET, handler as POST}
+export { handler as GET, nextAuthOptions, handler as POST };
